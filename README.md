@@ -1,6 +1,37 @@
-### Base de données MySQL
+# Lancement de l'application
 
-Pour test il faut avoir une base de données MySQL fyvm (user fyvm // fyvm)
+## Prérequis
+
+Ce projet nécessite JAVA 8 et Maven installé.
+
+## Explications
+
+L'application en demo fonctionne par défaut sous base de données H2.
+
+## Configuration Google Map
+
+Pour voir une map Google il faut modifier le fichier application.properties
+Sinon la carte googlemap fera une erreur javascript à l'exécution (le reste du projet tourne même si cette étape n'est pas effectuée)
+
+googlemap.apikey=FILLTHISKEY
+
+Mettre une apikey correcte.
+
+## Lancement du projet
+
+Importer le projet dans votre IDE en tant que projet Maven.
+
+Lancer la classe Application dans l'IDE.
+
+OU en ligne de commande: `mvn spring-boot:run`
+
+Ouvrir le navigateur à la page http://localhost:8080/
+
+# Base de données MySQL
+
+Il est possible de connecter l'application sur une base de données MySQL
+
+Il faut créer une base MySQL demo (user demo // demo)
 Ceci peut être configuré dans application.properties
 
 Pour installer facilement la base de données sous docker:
@@ -24,28 +55,4 @@ spring.datasource.password=demo
 docker stop demo // docker start demo
 
 ## Détruire le container
-docker rm fyvmdb
-
-
-# Project Base for Vaadin Flow and Spring Boot
-
-This project can be used as a starting point to create your own Vaadin Flow application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
-
-The best way to use it by via [vaadin.com/start](https://vaadin.com/start) - you can get only the necessary parts and choose the package naming you want to use.
-
-Import the project to the IDE of your choosing as a Maven project. 
-
-Run application using `mvn spring-boot:run` or directly running Application class from your IDE.
-
-Open http://localhost:8080/ in browser
-
-
-For documentation on using Vaadin Flow and Spring, visit [vaadin.com/docs](https://vaadin.com/docs/v10/flow/spring/tutorial-spring-basic.html)
-
-For more information on Vaadin Flow, visit https://vaadin.com/flow.
-
-Branching information:
-* `master` the latest version of the starter, using the latest platform snapshot
-* `V10` the version for Vaadin 10
-* `V11` the version for Vaadin 11
+docker rm demo
