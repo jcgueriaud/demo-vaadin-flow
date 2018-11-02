@@ -14,7 +14,7 @@ import lu.lusis.demo.ui.components.HelloWorld;
  * Page d'accueil pour exliquer une utilisation simple:
  * - de composant HTML
  * - de composant custom
- * -
+ * - de composant vaadin
  */
 @PageTitle("Accueil")
 @Route(value = "",layout = AppLayout.class)
