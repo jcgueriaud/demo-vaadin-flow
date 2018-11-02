@@ -14,6 +14,9 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import lu.lusis.demo.ui.views.MainView;
 import lu.lusis.demo.ui.views.UserListView;
 
+/**
+ * Exemple de layout très simple avec menu
+ */
 @BodySize(height = "100vh", width = "100vw")
 @Theme(Lumo.class)
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")

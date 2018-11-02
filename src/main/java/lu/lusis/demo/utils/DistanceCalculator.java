@@ -2,6 +2,10 @@ package lu.lusis.demo.utils;
 
 import lu.lusis.demo.backend.data.Position;
 
+/**
+ * Calcul Java pour réduire les points dans un raon de x kms
+ * Uniquement pour démo, à faire via la DB
+ */
 public class DistanceCalculator {
 
 

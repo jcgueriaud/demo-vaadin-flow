@@ -1,0 +1,32 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<!-- Defines the element -->
+<dom-module id="hello-world">
+    <template>
+        <style>
+            p {
+               font-size: 1.2em;
+            }
+        </style>
+        <p on-click="_onClick">Hello <strong>{{who}}</strong> :)</p>
+    </template>
+
+    <!-- Polymer boilerplate to register the element -->
+    <script>
+        class HelloWorld extends Polymer.Element {
+            static get is() {
+                return 'hello-world'
+            }
+            static get properties() {
+                return {
+                    who: {
+                        type: String,
+                        value: "World"
+                    }
+                }
+            }
+        }
+        customElements.define(HelloWorld.is, HelloWorld);
+    </script>
+</dom-module>

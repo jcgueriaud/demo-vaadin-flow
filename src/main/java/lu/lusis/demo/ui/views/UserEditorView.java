@@ -4,6 +4,7 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
@@ -24,6 +25,10 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import java.util.Optional;
 
+/**
+ * Cette page a un paramètre Integer qui correspond à l'id
+ * Il est optionnel (Création)
+ */
 @PageTitle("Edition utilisateur")
 @Tag("user-edit")
 @Route(value = "users/edit",layout = AppLayout.class)
@@ -38,6 +43,9 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
     private TextField lastname;
 
     private TextField registerNumber;
+
+
+    private DatePicker birthDate;
 
     private Binder<User> binder;
 
@@ -61,7 +69,8 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
         registerNumber = new TextField("Matricule");
         registerNumber.setValueChangeMode(ValueChangeMode.EAGER);
 
-        layout.add(firstname,lastname,registerNumber);
+        birthDate = new DatePicker("Date de naissance");
+        layout.add(firstname,lastname,registerNumber, birthDate);
 
         save = new Button("Sauvegarder");
         save.getElement().setAttribute("theme", "primary");
@@ -84,8 +93,9 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
 
         binder.forField(registerNumber).asRequired("Vous devez remplir le matricule")
                 .withValidator(this::checkRegisterNumber,"Le matricule doit être composé de 13 chiffres")
-        .bind(User::getRegisterNumber,User::setRegisterNumber);
+                .bind(User::getRegisterNumber,User::setRegisterNumber);
 
+        binder.bind(birthDate,User::getBirthdate,User::setBirthdate);
 
     }
 
@@ -101,12 +111,12 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
     }
 
     /**
-     * Ne vérifie que si le matricule fait 13 digits
+     * Vérifie si le matricule fait 13 digits
      * @param registerNumber
      * @return
      */
     private boolean checkRegisterNumber(String registerNumber) {
-        boolean registeredNumberOk = true;
+        boolean registeredNumberOk;
 
         if (registerNumber != null && registerNumber.length() != 13){
             registeredNumberOk = false;
@@ -117,18 +127,39 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
 
     }
 
-    public void edit(User user){
+    /**
+     *
+     *
+     * @param user utilisateur à éditer
+     */
+    private void edit(User user){
         binder.setBean(user);
         binder.validate().isOk();
     }
 
+    /**
+     * Permet de gérer le paramètre passé
+     *
+     * @param beforeEvent evenement
+     * @param id identifiant de l'utilisateur
+     */
     @Override
-    public void setParameter(BeforeEvent beforeEvent, Integer id) {
-        Optional<User> user =  userRepository.findById(id);
-        if (user.isPresent()){
-            edit(user.get());
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Integer id) {
+        // Recherche en base de données
+        if (id == null){
+            setTitle("Création d'un utilisateur");
+            edit(new User());
         } else {
-            throw new NotFoundException();
+            Optional<User> user = userRepository.findById(id);
+            if (user.isPresent()) {
+                setTitle("Modification de l'utilisateur "+user.get().getName());
+                // L'utilisateur a été trouvé on met à jour le modèle
+                edit(user.get());
+            } else {
+                // Pas d'utilisateur avec cet identifiant
+                // On jette une exception NotFoundException
+                throw new NotFoundException();
+            }
         }
     }
 }

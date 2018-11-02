@@ -1,5 +1,7 @@
-
+<!-- On inclut les tags utiles -->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<!-- repris du webjar google map voir le fichier pom.xml -->
+<!-- Explications complète  sur l'intération d'un composant web ici: https://vaadin.com/docs/v11/flow/web-components/integrating-a-web-component.html -->
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/google-map/google-map-marker.html">
 
@@ -24,8 +26,11 @@
         </style>
 
         <div id="main">
-            <google-map id="googleMap" latitude="49.6" longitude="6.25" zoom="13"
+            <!-- On affiche une map google sur le Luxembourg -->
+            <!-- On va executer une action JAVA _onGoogleMapDragend -->
+            <google-map id="googleMap" latitude="{{mapLat}}" longitude="{{mapLong}}" zoom="13"
                         api-key="[[apiKey]]" drag-events="true" on-google-map-dragend="_onGoogleMapDragend">
+                <!-- On liste l'ensemble des positions fournies par le modèle JAVA -->
                 <template is="dom-repeat" items="[[positions]]" as="position">
                     <google-map-marker latitude="{{position.latitude}}" longitude="{{position.longitude}}"
                                        icon="../images/pin.png">
@@ -45,6 +50,10 @@
                 return 'map-view';
             }
 
+            /**
+             * Centre par défaut la carte sur le Luxembourg
+             * @returns {{mapLat: {type: NumberConstructor, value: number}, mapLong: {type: NumberConstructor, value: number}}}
+             */
             static get properties() {
                 return {
                     mapLat: {

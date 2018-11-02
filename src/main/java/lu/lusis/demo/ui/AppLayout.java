@@ -19,6 +19,10 @@ import lu.lusis.demo.ui.views.MainView;
 import lu.lusis.demo.ui.views.MapView;
 import lu.lusis.demo.ui.views.UserListView;
 
+/**
+ * Exemple de layout avec menu en utilisant un add-on Vaadin
+ *
+ */
 @BodySize(height = "100vh", width = "100vw")
 @Theme(Lumo.class)
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
@@ -38,21 +42,21 @@ public class AppLayout extends HybridMenu {
         LeftMenu leftMenu = getLeftMenu();
 
         leftMenu.add(HMLabel.get()
-                .withCaption("<b>Demo App</b>"));
+                .withCaption("<b>Application de démonstration</b>"));
 
 
         getBreadCrumbs().setRoot(leftMenu.add(HMButton.get()
-                .withCaption("Home")
+                .withCaption("Accueil")
                 .withIcon(VaadinIcon.HOME)
                 .withNavigateTo(MainView.class)));
 
         leftMenu.add(HMButton.get()
-                .withCaption("User List")
+                .withCaption("Liste d'utilisateurs")
                 .withIcon(VaadinIcon.LIST)
                 .withNavigateTo(UserListView.class));
 
         leftMenu.add(HMButton.get()
-                .withCaption("Map")
+                .withCaption("Carte interactive")
                 .withIcon(VaadinIcon.GLOBE)
                 .withNavigateTo(MapView.class));
 

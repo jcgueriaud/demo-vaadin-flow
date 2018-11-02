@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service position
+ */
 @Service
 public class PositionService {
 
@@ -18,6 +21,15 @@ public class PositionService {
         this.positionRepository = positionRepository;
     }
 
+    /**
+     * Recherche les positions dans un rayon de x kms
+     * Ne pas utiliser en production si recherche JAVA
+     *
+     * @param longitude
+     * @param latitude
+     * @param distance
+     * @return
+     */
     public List<Position> findByDistance(Double longitude, Double latitude, Double distance){
         // if Mysql db
         //return positionRepository.findByDistance(longitude, latitude, distance);

@@ -25,12 +25,12 @@ public class MapView extends PolymerTemplate<MapView.MapModel> implements HasLog
 
     private final PositionService positionService;
 
-    public static Double DISTANCE = 10.0; // 3 kms
+    private static Double DISTANCE = 10.0; // 10 kms
 
 
 
     @Value("${googlemap.apikey}")
-    private String googleMapApiKey ="sdds";
+    private String googleMapApiKey;
 
     public interface MapModel extends TemplateModel {
         void setPositions(List<Position> positions);
@@ -42,27 +42,48 @@ public class MapView extends PolymerTemplate<MapView.MapModel> implements HasLog
         this.positionService = positionService;
     }
 
+    /**
+     * On set l'api key mis dans les paramètres
+     * On recherche les positions sur le Luxembourg
+     * Pour la démonstration elles sont hardcodées
+     */
     @PostConstruct
     private void init(){
         getModel().setApiKey(googleMapApiKey);
         updatePositions( 6.25, 49.6);
     }
-    /*
-    Récupère les coordonnées de la carte à la fin d'un drag sur celle-ci
-    Les coordonnées sont recupérées par la variable event créee par l'event _onGoogleMapDragend dans home-view.html, grâce à @EventData.
-    */
+
+    /**
+     * Récupère les coordonnées de la carte à la fin d'un drag sur celle-ci
+     * Les coordonnées sont recupérées par la variable event créee par l'event _onGoogleMapDragend dans home-view.html, grâce à @EventData.
+     *
+     * @param latitude latitude
+     * @param longitude Longitude
+     */
     @EventHandler
     private void _onGoogleMapDragend(@EventData("event.currentTarget.latitude") Double latitude, @EventData("event.currentTarget.longitude") Double longitude){
-        updatePositions(longitude, latitude);
+        updatePositions(latitude, longitude);
     }
-    private void updatePositions(Double longitude, Double latitude){
-        getLogger().debug("UPDATE position avec (long,lat) ("+ longitude+","+latitude+")");
-       // getModel().setPositionList(positionService.findByDistance(longitude, latitude, DISTANCE));
+
+    /**
+     * Va chercher les positions dans un rayon de 10 kms
+     *
+     * @param latitude latitude du centre de la map
+     * @param longitude Longitude du centre de la map
+     *
+     */
+    private void updatePositions( Double latitude, Double longitude){
+        getLogger().debug("Mise à jour des ponts trouvés avec (long,lat) (" + longitude + "," + latitude + ")");
+
+        /*  Appel du service de recherche */
         List<Position> positions = positionService.findByDistance(longitude, latitude, DISTANCE);
+        /* Mise à jour du titre de la page */
         if (positions != null)
             UI.getCurrent().getPage().setTitle(positions.size() + " position(s) trouvée(s)");
         else
             UI.getCurrent().getPage().setTitle( " Pas de position trouvée");
+
+        /* Mise à jour du modèle */
         getModel().setPositions(positions);
     }
 

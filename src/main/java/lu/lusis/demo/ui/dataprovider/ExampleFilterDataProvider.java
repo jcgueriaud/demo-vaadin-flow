@@ -34,6 +34,9 @@ public class ExampleFilterDataProvider<T, ID extends Serializable> implements Co
      * - Sort by default id ASC
      * - remove id to Example matcher
      * - filter "contains" to all String attributes
+     *
+     * Used for demo purpose
+     *
      * @param repository
      */
     public ExampleFilterDataProvider(JpaRepository<T, ID> repository) {
