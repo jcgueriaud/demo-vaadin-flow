@@ -11,21 +11,11 @@
             :host {
                 display: flex;
                 flex-direction: column;
-                height: 100vh;
+                height: 100%;
             }
 
-            #main {
-                width: 100%;
-                height: 100%;
-                position: relative;
-            }
-            #googleMap {
-                width: 100%;
-                height: 100%;
-            }
         </style>
 
-        <div id="main">
             <!-- On affiche une map google sur le Luxembourg -->
             <!-- On va executer une action JAVA _onGoogleMapDragend -->
             <google-map id="googleMap" latitude="{{mapLat}}" longitude="{{mapLong}}" zoom="13"
@@ -41,7 +31,6 @@
                 </template>
 
             </google-map>
-        </div>
 
     </template>
     <script>

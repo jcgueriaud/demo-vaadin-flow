@@ -114,12 +114,12 @@ public class UserListView extends VerticalLayout {
         // On binde le 1er champ
         binder.forField(filterFirstname) // Champ Vaadin Prénom
                 // On valide le champ s'il est vide ou plus de 2 caractères
-                .withValidator(firstname -> firstname.isEmpty()|| firstname.length() > 2,"Veuillez saisir a moins 3 caractères")
+                .withValidator(firstname -> firstname.isEmpty()|| firstname.length() > 2,"Veuillez saisir au moins 3 caractères")
                 // En lecture on utilise la fonction getFirstname, en écriture setFirstname
                 .bind(User::getFirstname,User::setFirstname);
         // On binde le 2eme champ
         binder.forField(filterName)
-                .withValidator(name -> name.isEmpty()|| name.length() > 2,"Veuillez saisir a moins 3 caractères")
+                .withValidator(name -> name.isEmpty()|| name.length() > 2,"Veuillez saisir au moins 3 caractères")
                 .bind(User::getName,User::setName);
 
 
@@ -175,6 +175,8 @@ public class UserListView extends VerticalLayout {
 
         userGrid.addColumn(new LocalDateRenderer<>(User::getBirthdate, "dd/MM/yyyy")).setHeader("Date de naissance")
                 .setSortProperty("birthDate");
+
+        userGrid.addColumn(User::getRegisterNumber).setHeader("Matricule");
 
         // Bouton Editer avec en header le bouton Ajouter
         userGrid.addComponentColumn( this::generateEditButton).setHeader(generateAddUserButton());

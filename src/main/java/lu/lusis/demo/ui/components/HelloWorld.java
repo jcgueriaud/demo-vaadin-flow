@@ -37,7 +37,7 @@ public class HelloWorld extends PolymerTemplate<HelloWorld.HelloWorldModel> {
      *
      */
     @EventHandler
-    public void _onClick(){
+    private void _onClick(){
         Notification.show(getModel().getWho() + " says hello");
     }
 
