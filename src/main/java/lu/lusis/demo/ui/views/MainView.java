@@ -4,20 +4,20 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.PageTitle;
-import lu.lusis.demo.ui.AppLayout;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import lu.lusis.demo.ui.MainAppLayout;
 import lu.lusis.demo.ui.components.HelloWorld;
 
 /**
- * Page d'accueil pour exliquer une utilisation simple:
+ * Page d'accueil pour expliquer une utilisation simple:
  * - de composant HTML
  * - de composant custom
  * - de composant vaadin
  */
 @PageTitle("Accueil")
-@Route(value = "",layout = AppLayout.class)
+@Route(value = "",layout = MainAppLayout.class)
 public class MainView extends VerticalLayout {
 
     public MainView() {

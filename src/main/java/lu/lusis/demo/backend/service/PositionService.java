@@ -3,6 +3,7 @@ package lu.lusis.demo.backend.service;
 import lu.lusis.demo.backend.data.Position;
 import lu.lusis.demo.backend.repository.PositionRepository;
 import lu.lusis.demo.utils.DistanceCalculator;
+import lu.lusis.demo.utils.HasLogger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
  * Service position
  */
 @Service
-public class PositionService {
+public class PositionService implements HasLogger {
 
     private final PositionRepository positionRepository;
 

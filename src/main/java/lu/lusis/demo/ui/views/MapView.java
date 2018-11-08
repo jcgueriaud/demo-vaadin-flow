@@ -10,7 +10,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import lu.lusis.demo.backend.data.Position;
 import lu.lusis.demo.backend.service.PositionService;
-import lu.lusis.demo.ui.AppLayout;
+import lu.lusis.demo.ui.MainAppLayout;
 import lu.lusis.demo.utils.HasLogger;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Tag("map-view")
 @HtmlImport("src/views/map-view.html")
-@Route(value = "map",layout = AppLayout.class)
+@Route(value = "map",layout = MainAppLayout.class)
 public class MapView extends PolymerTemplate<MapView.MapModel> implements HasLogger {
 
     private final PositionService positionService;
@@ -50,7 +50,7 @@ public class MapView extends PolymerTemplate<MapView.MapModel> implements HasLog
     @PostConstruct
     private void init(){
         getModel().setApiKey(googleMapApiKey);
-        updatePositions( 6.25, 49.6);
+        updatePositions( 49.6, 6.25);
     }
 
     /**

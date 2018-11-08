@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 
 /**
@@ -19,7 +20,10 @@ import java.time.LocalDate;
 public class DataGenerator {
 
 
-    Logger logger = LoggerFactory.getLogger(DataGenerator.class);
+    private Logger logger = LoggerFactory.getLogger(DataGenerator.class);
+
+    private static final String digits = "0123456789";
+    private static SecureRandom rnd = new SecureRandom();
 
     private final UserRepository userRepository;
 
@@ -40,11 +44,21 @@ public class DataGenerator {
             logger.warn("User empty - Generate users");
             // add some data in db
             for (int i = 0; i < userSize; i++) {
-                userRepository.save(new User("Name " + i, " Firstname " + i, LocalDate.now()));
+                userRepository.save(new User("Name " + i, " Firstname " + i, generateRandomRegisterNumber(), LocalDate.now()));
             }
         }
 
         generatePositions();
+    }
+    private String generateRandomRegisterNumber(){
+        return randomString(13);
+    }
+
+    private String randomString( int len ){
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( digits.charAt( rnd.nextInt(digits.length()) ) );
+        return sb.toString();
     }
 
     private void generatePositions() {

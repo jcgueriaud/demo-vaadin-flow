@@ -41,7 +41,7 @@ public class ExampleFilterDataProvider<T, ID extends Serializable> implements Co
      */
     public ExampleFilterDataProvider(JpaRepository<T, ID> repository) {
         this.repository = repository;
-        this.matcher =  ExampleMatcher.matching().withIgnorePaths("id")
+        this.matcher =  ExampleMatcher.matching().withIgnorePaths("id","countryCode")
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 .withIgnoreNullValues();
         defaultSort = new ArrayList<>();

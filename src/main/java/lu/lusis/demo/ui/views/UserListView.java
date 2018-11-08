@@ -14,7 +14,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lu.lusis.demo.backend.data.User;
 import lu.lusis.demo.backend.repository.UserRepository;
-import lu.lusis.demo.ui.AppLayout;
+import lu.lusis.demo.ui.MainAppLayout;
 import lu.lusis.demo.ui.dataprovider.ExampleFilterDataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,27 +23,28 @@ import javax.annotation.PostConstruct;
 
 /**
  * Liste d'utilisateurs
- * Cet écran montre comment créer un écran complètement en JAVA
- * Il est composé:
+ * Cette classe illustre comment créer par code une page/vue composée:
  * - d'un filtre
  * - d'une grille affichant le résultat
+ *
  */
 @PageTitle("Liste d'utilisateurs")
-@Route(value = "users",layout = AppLayout.class)
+@Route(value = "users",layout = MainAppLayout.class)
 public class UserListView extends VerticalLayout {
+
 
     private Logger logger = LoggerFactory.getLogger(UserListView.class);
 
-    /** Repository user pour faire les requêtes filtrées et triées en BDD **/
+    /** Implementation du Pattern Repository pour exécuter des requêtes filtrées et triées en BDD **/
     private final UserRepository userRepository;
 
-    /** Filtres **/
+    /** Composants d'interface du filtre **/
     private HorizontalLayout filter;
     private TextField filterFirstname;
     private TextField filterName;
 
 
-    /** Grille d'utilisateurs **/
+    /** Grille de présentation des objets User **/
     private Grid<User> userGrid;
 
     /** Data provider pour la grille **/
@@ -77,6 +78,70 @@ public class UserListView extends VerticalLayout {
         // On ajoute le filtre et la grille
         add(filter);
         add(userGrid);
+        setSizeFull();
+
+    }
+
+
+    /**
+     * Initialisation du filtre
+     * Le filtre doit contenir 2 champs
+     * - Nom (valide si au moins 3 caractères ou vide)
+     * - Prénom (valide si au moins 3 caractères ou vide)
+     *
+     *
+     *  Le filtre s'effectue dès qu'on modifie le filtre.
+     *  Si le filtre n'est pas valide il ne fait rien
+     *
+     */
+    private void initFilter() {
+        // Construction de la layout
+        // 2 champs qui prennent toute la largeur
+        filter = new HorizontalLayout();
+        filter.setWidth("100%");
+        filter.setAlignItems(Alignment.START);
+
+        filterFirstname = new TextField("Prénom");
+        filterName = new TextField("Nom");
+        filter.add(filterFirstname, filterName);
+        filter.setFlexGrow(1,filterFirstname,filterName);
+        // Layout finie
+
+
+        // Dans Vaadin il y une notion de Binder
+        // Il permet de lier le "champ" TextField", DatePicker ... et la propriété JAVA de l'objet
+        Binder<User> binder = new Binder<>(User.class);
+        // On binde le 1er champ
+        binder.forField(filterFirstname) // Champ Vaadin Prénom
+                // On valide le champ s'il est vide ou plus de 2 caractères
+                .withValidator(firstname -> firstname.isEmpty()|| firstname.length() > 2,"Veuillez saisir a moins 3 caractères")
+                // En lecture on utilise la fonction getFirstname, en écriture setFirstname
+                .bind(User::getFirstname,User::setFirstname);
+        // On binde le 2eme champ
+        binder.forField(filterName)
+                .withValidator(name -> name.isEmpty()|| name.length() > 2,"Veuillez saisir a moins 3 caractères")
+                .bind(User::getName,User::setName);
+
+
+
+        // Dès que l'utilisateur tape un caractère dans le champ
+        // le champ est mis à jour -> "value change"
+        filterFirstname.setValueChangeMode(ValueChangeMode.EAGER);
+        filterName.setValueChangeMode(ValueChangeMode.EAGER);
+
+
+        // Le filtre est stocké dans un objet User
+        // On l'initialise à vide
+        User filterUser = new User();
+        binder.setBean(filterUser);
+
+        // Dès que le binder est mis à jour
+        // on filtre si le formulaire est valide
+        binder.addValueChangeListener(
+                event ->  {
+                    // Si binder valide alors on met à jour le filtre
+                    if (binder.validate().isOk()) {filterDataProvider.setFilter(filterUser);}
+                });
 
     }
 
@@ -116,77 +181,17 @@ public class UserListView extends VerticalLayout {
 
         // Ici on utilise un dataprovider Lazy Spring
         // Il va créer la requête en fonction du filtre et du tri
-        // on peut utliser la fonction userGrid.setItems pour un chargement complet
+        // on peut utiliser la fonction userGrid.setItems pour un chargement complet
         userGrid.setDataProvider(filterDataProvider);
 
     }
 
     /**
-     * Initialisation du filtre
-     * Le filtre doit contenir 2 champs
-     * - Nom (valide si au moins 3 caractères ou vide)
-     * - Prénom (valide si au moins 3 caractères ou vide)
-     *
-     *
-     *  Le filtre s'effectue dès qu'on modifie le filtre.
-     *  Si le filtre n'est pas valide il ne fait rien
-     *
-     */
-    private void initFilter() {
-        // Construction de la layout
-        // 2 champs qui prennent toute la largeur
-        filter = new HorizontalLayout();
-        filter.setWidth("100%");
-        filter.setAlignItems(Alignment.START);
-
-        filterFirstname = new TextField("Prénom");
-        filterName = new TextField("Nom");
-        filter.add(filterFirstname, filterName);
-        filter.setFlexGrow(1,filterFirstname,filterName);
-        // Layout finie
-
-
-        // Dans Vaadin il y une notion de Binder
-        // Il permet de lier le "champ" TextField", DatePicker ... et la propriété JAVA de l'objet
-        Binder<User> binder = new Binder<>(User.class);
-        // On binde le 1er champ
-        binder.forField(filterFirstname) // Champ Vaadin Prénom
-                // On valide le champ s'il est vide ou plus de 2 caractères
-                .withValidator(firstname -> firstname.isEmpty()|| firstname.length() > 2,"Veuillez saisir a moins 3 caractères")
-                // En lecture on utilise la fonction getFirstname, en écriture setFirstname
-                .bind(User::getFirstname,User::setFirstname);
-        // On binde le 2eme champ
-        binder.forField(filterName)
-                .withValidator(name -> name.isEmpty()|| name.length() > 2,"Veuillez saisir a moins 3 caractères")
-                .bind(User::getFirstname,User::setFirstname);
-
-
-        // Dès que l'utilisateur tape un caractère dans le champ
-        // le champ est mis à jour -> "value change"
-        filterFirstname.setValueChangeMode(ValueChangeMode.EAGER);
-        filterName.setValueChangeMode(ValueChangeMode.EAGER);
-
-
-        // Le filtre est stocké dans un objet User
-        // On l'initialise à vide
-        User filterUser = new User();
-        binder.setBean(filterUser);
-
-        // Dès que le binder est mis à jour on exécute la fonction
-        binder.addValueChangeListener(
-                event ->  {
-                    // Si binder valide alors on met à jour le filtre
-                    if (binder.isValid()) {filterDataProvider.setFilter(filterUser);}
-                });
-
-    }
-
-
-    /**
-     * génére un bouton qui navigue vers l'écran d'édition
+     * Génére un bouton qui navigue vers l'écran d'édition
      * avec comme paramètre l'id de l'utilisateur
-     * @param user
-     * @return
+     *
+     * @param user utilisateur à éditer
+     * @return bouton d'édition
      */
     private Button generateEditButton(User user){
         Button button = new Button("Editer", VaadinIcon.EDIT.create());
@@ -197,10 +202,10 @@ public class UserListView extends VerticalLayout {
     }
 
     /**
-     * génére un bouton qui navigue vers l'écran d'édition
+     * Génére un bouton qui navigue vers l'écran d'édition
      * sans paramètre
      *
-     * @return
+     * @ Bouton de création
      */
     private Button generateAddUserButton(){
         Button button = new Button("Nouvel utilisateur", VaadinIcon.PLUS.create());

@@ -20,13 +20,20 @@ public class User {
 
     private LocalDate birthdate;
 
-
+    private String countryCode;
     public User() {
     }
 
     public User(String name, String firstname, LocalDate birthdate) {
         this.name = name;
         this.firstname = firstname;
+        this.birthdate = birthdate;
+    }
+
+    public User(String name, String firstname, String registerNumber, LocalDate birthdate) {
+        this.name = name;
+        this.firstname = firstname;
+        this.registerNumber = registerNumber;
         this.birthdate = birthdate;
     }
 
@@ -68,6 +75,15 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     @Override
