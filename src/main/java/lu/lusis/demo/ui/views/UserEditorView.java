@@ -4,6 +4,7 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
@@ -16,6 +17,7 @@ import com.vaadin.flow.router.*;
 import lu.lusis.demo.backend.data.User;
 import lu.lusis.demo.backend.repository.UserRepository;
 import lu.lusis.demo.ui.MainAppLayout;
+import lu.lusis.demo.utils.CountryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,8 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
 
 
     private DatePicker birthDate;
+
+    private ComboBox<String> country;
 
     private Binder<User> binder;
 
@@ -90,7 +94,11 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
 
         birthDate = new DatePicker("Date de naissance");
 
-        layout.add(firstname,lastname,registerNumber, birthDate);
+        country = new ComboBox<>("Pays");
+        country.setItems(CountryUtils.getCountryCodes());
+        country.setItemLabelGenerator(code -> CountryUtils.getCountryName(code));
+
+        layout.add(firstname,lastname,registerNumber, birthDate, country);
 
         save = new Button("Sauvegarder");
         save.getElement().setAttribute("theme", "primary");
@@ -119,6 +127,7 @@ public class UserEditorView extends Div implements HasUrlParameter<Integer> {
                 .bind(User::getRegisterNumber,User::setRegisterNumber);
         // Date de naissance
         binder.bind(birthDate,User::getBirthdate,User::setBirthdate);
+        binder.bind(country,User::getCountryCode,User::setCountryCode);
 
     }
 

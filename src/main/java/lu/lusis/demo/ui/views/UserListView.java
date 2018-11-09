@@ -43,6 +43,8 @@ public class UserListView extends VerticalLayout {
     private TextField filterFirstname;
     private TextField filterName;
 
+    private TextField filterRegisterNumber;
+
 
     /** Grille de présentation des objets User **/
     private Grid<User> userGrid;
@@ -103,7 +105,8 @@ public class UserListView extends VerticalLayout {
 
         filterFirstname = new TextField("Prénom");
         filterName = new TextField("Nom");
-        filter.add(filterFirstname, filterName);
+        filterRegisterNumber= new TextField("Matricule");
+        filter.add(filterFirstname, filterName,filterRegisterNumber);
         filter.setFlexGrow(1,filterFirstname,filterName);
         // Layout finie
 
@@ -123,11 +126,14 @@ public class UserListView extends VerticalLayout {
                 .bind(User::getName,User::setName);
 
 
+        binder.forField(filterRegisterNumber)
+                .bind(User::getRegisterNumber,User::setRegisterNumber);
 
         // Dès que l'utilisateur tape un caractère dans le champ
         // le champ est mis à jour -> "value change"
         filterFirstname.setValueChangeMode(ValueChangeMode.EAGER);
         filterName.setValueChangeMode(ValueChangeMode.EAGER);
+        filterRegisterNumber.setValueChangeMode(ValueChangeMode.EAGER);
 
 
         // Le filtre est stocké dans un objet User

@@ -1,3 +1,9 @@
+# Application déployée 
+
+L'application de démonstration est visible à cette adresse:
+
+http://demo-vaadin.lusis.lu:8080/
+
 # Lancement de l'application
 
 ## Prérequis
@@ -56,3 +62,5 @@ docker stop demo // docker start demo
 
 ## Détruire le container
 docker rm demo
+
+
