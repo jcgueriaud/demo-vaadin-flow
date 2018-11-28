@@ -1,5 +1,6 @@
 <!-- Dependency resources -->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/vaadin-themable-mixin/vaadin-themable-mixin.html">
 
 <!-- Defines the element -->
 <dom-module id="hello-world">
@@ -14,9 +15,9 @@
 
     <!-- Polymer boilerplate to register the element -->
     <script>
-        class HelloWorld extends Polymer.Element {
+        class HelloWorld extends Vaadin.ThemableMixin(Polymer.Element) {
             static get is() {
-                return 'hello-world'
+                return 'hello-world';
             }
             static get properties() {
                 return {

@@ -9,5 +9,29 @@
             --app-menu-selected-bg-color: var(--lumo-contrast-10pct);
         }
 
+        html {
+            --lusis-color: red;
+        }
+        [theme~="dark"] {
+            --lusis-color: pink;
+        }
     </style>
 </custom-style>
+
+
+
+<dom-module theme-for="hello-world" id="lusis-test">
+    <template>
+        <style>
+            p {
+                color:var(--lusis-color);
+            }
+            p {
+                background-color: chocolate;
+            }
+            [theme~="dark"] p {
+                background-color:grey;
+            }
+        </style>
+    </template>
+</dom-module>
