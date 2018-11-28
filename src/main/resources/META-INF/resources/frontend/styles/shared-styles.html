@@ -10,25 +10,24 @@
         }
 
         html {
-            --lusis-color: red;
+            --custom-color: red;
         }
         [theme~="dark"] {
-            --lusis-color: pink;
+            --custom-color: pink;
         }
     </style>
 </custom-style>
 
 
 
-<dom-module theme-for="hello-world" id="lusis-test">
+<dom-module theme-for="hello-world" id="custom-hello-world">
     <template>
         <style>
+            /* Works but i need to define an extra variable */
             p {
-                color:var(--lusis-color);
+                color:var(--custom-color);
             }
-            p {
-                background-color: chocolate;
-            }
+            /* does not work */
             [theme~="dark"] p {
                 background-color:grey;
             }
